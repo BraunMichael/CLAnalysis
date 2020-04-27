@@ -143,7 +143,7 @@ else
     ax1=subplot(1,2,1);
     colormap(ax1,gray(256))
     image(SEM_SEdet,'CDataMapping','scaled')
-    %title(sprintf('SEM Secondary Electron Image - Scale = %s',scaletext),'Interpreter','latex')
+    title(sprintf('SEM Secondary Electron Image - Scale = %s',scaletext),'Interpreter','latex')
     axis off
     pbaspect([1 1 1])
     set(ax1,'Visible','off')
@@ -159,24 +159,24 @@ else
     ax2=subplot(1,2,2);
     colormap(ax2,jet(256))
     image(IR_det_filtered_destripe_subtracted,'CDataMapping','scaled')
-    %title(sprintf('IR Detector - Scale = %s',scaletext),'Interpreter','latex')
+    title(sprintf('IR Detector - Scale = %s',scaletext),'Interpreter','latex')
     axis off
     pbaspect([1 1 1])
     caxis([0 max(IR_det_filtered_destripe_subtracted(:))])
-    %IR_colorbar=colorbar('peer',ax2);
-    %IR_colorbar.Label.String = 'Detector signal above average background';
+    IR_colorbar=colorbar('peer',ax2);
+    IR_colorbar.Label.String = 'Detector signal above average background';
     hold on
     %plot the scalebar
     plot([p1(2),p2(2)],[p1(1),p2(1)],'Color',[0.999999 0.999999 0.999999],'LineWidth',15);
     hold off
     
-%     %Put some scan parameters in the middle of figures
-%     MyBox = uicontrol('style','text');
-%     set(MyBox,'String', ...
-%         sprintf('Aperture =\n%g um\n\nVoltage =\n%g kV\n\nWD =\n%g mm\n\nFrame time =\n%.3g s\n\nPixel time =\n%g ms\n\nResolution =\n%gx%g\n\nadc rate =\n%g kHz\n\nadc\nover sample =\n%gx', ...
-%         aperture_size,voltage,workingdistance,frametime,pixeltime,resolution,resolution,adc_rate,adc_oversample),...
-%         'FontSize',18,'Units','normalized','Position',[0.481, 0.05, 0.085, 0.8],...
-%         'HorizontalAlignment','left','BackgroundColor',[1 1 1])
+    %Put some scan parameters in the middle of figures
+    MyBox = uicontrol('style','text');
+    set(MyBox,'String', ...
+        sprintf('Aperture =\n%g um\n\nVoltage =\n%g kV\n\nWD =\n%g mm\n\nFrame time =\n%.3g s\n\nPixel time =\n%g ms\n\nResolution =\n%gx%g\n\nadc rate =\n%g kHz\n\nadc\nover sample =\n%gx', ...
+        aperture_size,voltage,workingdistance,frametime,pixeltime,resolution,resolution,adc_rate,adc_oversample),...
+        'FontSize',18,'Units','normalized','Position',[0.481, 0.05, 0.085, 0.8],...
+        'HorizontalAlignment','left','BackgroundColor',[1 1 1])
     %Save file
     if Save_file==0
     else
