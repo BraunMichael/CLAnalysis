@@ -15,26 +15,32 @@ imagesc(SEM_SEdet)
 pbaspect([1 1 1])
 title('SEM Secondary Electron Image','Interpreter','latex')
 axis off
-btn = uicontrol('Style', 'pushbutton', 'String', 'Save',...
-    'Units','normalized','Position', [0.1 0.5 0.125 0.075],...
+savebtn = uicontrol('Style', 'pushbutton', 'String', 'Save',...
+    'Units','normalized','Position', [0.1 0.55 0.125 0.075],...
     'Callback', @savefun);
 
-%Have user select initial spectrum area
+exportbtn = uicontrol('Style', 'pushbutton', 'String', 'Export',...
+    'Units','normalized','Position', [0.1 0.45 0.125 0.075],...
+    'Callback', @exportfun);
+
+%Plot initial spectrum area
 ellipseHandle=imellipse(ROIpicker_handle, [ length(SEM_SEdet)/2 length(SEM_SEdet)/2 length(SEM_SEdet)/20 length(SEM_SEdet)/20 ] );
 ellipseHandle.setFixedAspectRatioMode( '1' )
-questdlg({'Drag the circle to select region of interest' 'When finished, double click on the circle to generate the first averaged spectra from the area within'},'ROI Selection Instructions','OK','Cancel','OK');
-wait(ellipseHandle);
 cirpos=ellipseHandle.getPosition;
 mask_single=createMask(ellipseHandle);
-spec_selected=zeros(size(spec_data_corr));
+
+kk=1;
+spec_selected=zeros(nnz(mask_single),size(spec_data_corr,3));
 for ii=1:size(mask_single,1)
     for jj=1:size(mask_single,2)
-        spec_selected(ii,jj,:)=spec_data_corr(ii,jj,:).*(mask_single(ii,jj));
+        if mask_single(ii,jj)==0
+        else spec_selected(kk,:)=spec_data_corr(ii,jj,:).*(mask_single(ii,jj));
+            kk=kk+1;
+        end
     end
 end
-
-CLspectra=mean(mean(spec_selected,1),2);
-CLspectra_permuted=(permute(CLspectra,[3 2 1]));
+CLspectra=mean(spec_selected,1);
+CLspectra_permuted=(permute(CLspectra,[2 1]));
 
 %Converted to wavelength from pixel value, specific for 800 nm
 %center wavelength, slightly different at other center wavelengths,
